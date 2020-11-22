@@ -4,7 +4,7 @@ namespace TimeLibrary
 {
     public class TimeStringParser
     {
-        public static byte getHour(string timeString)
+        public static byte GetHours(string timeString)
         {
             string[] time = timeString.Split(':');
 
@@ -16,7 +16,7 @@ namespace TimeLibrary
             return 0;
         }
 
-        public static byte getMinute(string timeString)
+        public static byte GetMinutes(string timeString)
         {
             string[] time = timeString.Split(':');
 
@@ -28,7 +28,7 @@ namespace TimeLibrary
             return 0;
         }
 
-        public static byte getSecond(string timeString)
+        public static byte GetSeconds(string timeString)
         {
             string[] time = timeString.Split(':');
 

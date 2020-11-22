@@ -4,17 +4,13 @@ namespace TimeLibrary
 {
     public class Time : IEquatable<Time>, IComparable<Time>
     {
-        public const int ONE_HOUR_IN_SECONDS = 3600;
-
-        public const int ONE_MINUTE_IN_SECONDS = 60;
-
         private byte Hours = 0;
 
         private byte Minutes = 0;
 
         private byte Seconds = 0;
 
-        private int TimeStamp = 0;
+        private long timestamp = 0;
 
         public Time(byte hours, byte minutes, byte seconds)
         {
@@ -26,7 +22,7 @@ namespace TimeLibrary
             TimeValidator.validateMinute(this.Minutes);
             TimeValidator.validateSecond(this.Seconds);
 
-            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS) + this.Seconds;
+            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(byte hours, byte minutes)
@@ -37,7 +33,7 @@ namespace TimeLibrary
             TimeValidator.validateHour(this.Hours);
             TimeValidator.validateMinute(this.Minutes);
 
-            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS);
+            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(byte hours)
@@ -46,20 +42,20 @@ namespace TimeLibrary
 
             TimeValidator.validateHour(this.Hours);
 
-            this.TimeStamp = this.Hours * ONE_HOUR_IN_SECONDS;
+            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(string timeString)
         {
-            this.Hours = TimeStringParser.getHour(timeString);
-            this.Minutes = TimeStringParser.getMinute(timeString);
-            this.Seconds = TimeStringParser.getSecond(timeString);
+            this.Hours = TimeStringParser.GetHours(timeString);
+            this.Minutes = TimeStringParser.GetMinutes(timeString);
+            this.Seconds = TimeStringParser.GetSeconds(timeString);
 
             TimeValidator.validateHour(this.Hours);
             TimeValidator.validateMinute(this.Minutes);
             TimeValidator.validateSecond(this.Seconds);
 
-            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS) + this.Seconds;
+            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
         }
 
         public static bool operator ==(Time time1, Time time2) => time1.Equals(time2);
@@ -67,27 +63,27 @@ namespace TimeLibrary
 
         public static bool operator >(Time time1, Time time2)
         {
-            return time1.TimeStamp > time2.TimeStamp;
+            return time1.timestamp > time2.timestamp;
         }
 
         public static bool operator <(Time time1, Time time2)
         {
-            return time1.TimeStamp < time2.TimeStamp;
+            return time1.timestamp < time2.timestamp;
         }
 
         public static bool operator >=(Time time1, Time time2)
         {
-            return time1.TimeStamp >= time2.TimeStamp;
+            return time1.timestamp >= time2.timestamp;
         }
 
         public static bool operator <=(Time time1, Time time2)
         {
-            return time1.TimeStamp <= time2.TimeStamp;
+            return time1.timestamp <= time2.timestamp;
         }
 
         public bool Equals(Time time)
         {
-            return this.TimeStamp == time.TimeStamp;
+            return this.timestamp == time.timestamp;
         }
 
         public override bool Equals(object obj)
@@ -102,7 +98,7 @@ namespace TimeLibrary
 
         public override int GetHashCode()
         {
-            return this.Hours + this.Minutes + this.Seconds + this.TimeStamp;
+            return (int) (this.Hours + this.Minutes + this.Seconds + this.timestamp);
         }
 
         public int CompareTo(Time time)
@@ -112,7 +108,7 @@ namespace TimeLibrary
                 return 0;
             }
 
-            if (this.TimeStamp < time.TimeStamp)
+            if (this.timestamp < time.timestamp)
             {
                 return 1;
             }
