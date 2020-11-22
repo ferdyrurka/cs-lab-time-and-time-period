@@ -22,18 +22,31 @@ namespace TimeLibrary
             this.Minutes = minutes;
             this.Seconds = seconds;
 
-            this.TimeStamp = (this.Hours * 3600) + (this.Minutes * 60) + this.Seconds;
+            TimeValidator.validateHour(this.Hours);
+            TimeValidator.validateMinute(this.Minutes);
+            TimeValidator.validateSecond(this.Seconds);
+
+            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS) + this.Seconds;
         }
 
         public Time(byte hours, byte minutes)
         {
             this.Hours = hours;
             this.Minutes = minutes;
+
+            TimeValidator.validateHour(this.Hours);
+            TimeValidator.validateMinute(this.Minutes);
+
+            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS);
         }
 
         public Time(byte hours)
         {
             this.Hours = hours;
+
+            TimeValidator.validateHour(this.Hours);
+
+            this.TimeStamp = this.Hours * ONE_HOUR_IN_SECONDS;
         }
 
         public Time(string timeString)
@@ -41,6 +54,12 @@ namespace TimeLibrary
             this.Hours = TimeStringParser.getHour(timeString);
             this.Minutes = TimeStringParser.getMinute(timeString);
             this.Seconds = TimeStringParser.getSecond(timeString);
+
+            TimeValidator.validateHour(this.Hours);
+            TimeValidator.validateMinute(this.Minutes);
+            TimeValidator.validateSecond(this.Seconds);
+
+            this.TimeStamp = (this.Hours * ONE_HOUR_IN_SECONDS) + (this.Minutes * ONE_MINUTE_IN_SECONDS) + this.Seconds;
         }
 
         public static bool operator ==(Time time1, Time time2) => time1.Equals(time2);
