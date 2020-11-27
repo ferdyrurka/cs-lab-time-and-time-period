@@ -1,10 +1,114 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TimeLibrary.Helper;
+using TimeLibrary.Parser;
+using TimeLibrary.Validator;
 
 namespace TimeLibrary
 {
-    class TimePeriod
+    public class TimePeriod : IEquatable<TimePeriod>, IComparable<TimePeriod>
     {
+        private readonly long TimeInSeconds;
+
+        public TimePeriod(int hours, byte minutes, byte seconds)
+        {
+            TimePeriodValidator.ValidateHour(hours);
+            TimePeriodValidator.ValidateMinute(minutes);
+            TimePeriodValidator.ValidateSecond(seconds);
+
+            this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes, seconds);
+        }
+
+        public TimePeriod(int hours, byte minutes)
+        {
+            TimePeriodValidator.ValidateHour(hours);
+            TimePeriodValidator.ValidateMinute(minutes);
+
+            this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes);
+        }
+
+        public TimePeriod(int hours)
+        {
+            TimePeriodValidator.ValidateHour(hours);
+
+            this.TimeInSeconds = TimeToSecondHelper.Get(hours);
+        }
+
+        public TimePeriod(string timeString)
+        {
+            int hours = StringToTimeParser.GetHours(timeString);
+            byte minutes = StringToTimeParser.GetMinutes(timeString);
+            byte seconds = StringToTimeParser.GetSeconds(timeString);
+
+            TimePeriodValidator.ValidateHour(hours);
+            TimePeriodValidator.ValidateMinute(minutes);
+            TimePeriodValidator.ValidateSecond(seconds);
+
+            this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes, seconds);
+        }
+
+        public static bool operator ==(TimePeriod timePeriod1, TimePeriod timePeriod2) => timePeriod1.Equals(timePeriod2);
+        public static bool operator !=(TimePeriod timePeriod1, TimePeriod timePeriod2) => !timePeriod1.Equals(timePeriod2);
+
+        public static bool operator >(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1.TimeInSeconds > timePeriod2.TimeInSeconds;
+        }
+
+        public static bool operator <(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1.TimeInSeconds < timePeriod2.TimeInSeconds;
+        }
+
+        public static bool operator >=(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1.TimeInSeconds >= timePeriod2.TimeInSeconds;
+        }
+
+        public static bool operator <=(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1.TimeInSeconds <= timePeriod2.TimeInSeconds;
+        }
+
+        public bool Equals(TimePeriod timePeriod)
+        {
+            return this.TimeInSeconds == timePeriod.TimeInSeconds;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is TimePeriod timePeriod)
+            {
+                return Equals(timePeriod);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)(this.TimeInSeconds);
+        }
+
+        public int CompareTo(TimePeriod timePeriod)
+        {
+            if (this.Equals(timePeriod))
+            {
+                return 0;
+            }
+
+            if (this.TimeInSeconds < timePeriod.TimeInSeconds)
+            {
+                return 1;
+            }
+
+            return -1;
+        }
+
+        public override string ToString()
+        {
+            return TimeToStringParser.FromTimeInSeconds(TimeInSeconds);
+        }
     }
 }

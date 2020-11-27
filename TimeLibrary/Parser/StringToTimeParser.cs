@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace TimeLibrary
+namespace TimeLibrary.Parser
 {
-    public class TimeStringParser
+    class StringToTimeParser
     {
-        public static byte GetHours(string timeString)
+        public static int GetHours(string timeString)
         {
             string[] time = timeString.Split(':');
 

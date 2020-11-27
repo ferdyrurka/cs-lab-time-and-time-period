@@ -1,16 +1,19 @@
 ﻿using System;
+using TimeLibrary.Helper;
+using TimeLibrary.Parser;
+using TimeLibrary.Validator;
 
 namespace TimeLibrary
 {
     public class Time : IEquatable<Time>, IComparable<Time>
     {
-        private byte Hours = 0;
+        private readonly byte Hours = 0;
 
-        private byte Minutes = 0;
+        private readonly byte Minutes = 0;
 
-        private byte Seconds = 0;
+        private readonly byte Seconds = 0;
 
-        private long timestamp = 0;
+        private readonly long TimeInSeconds = 0;
 
         public Time(byte hours, byte minutes, byte seconds)
         {
@@ -18,11 +21,11 @@ namespace TimeLibrary
             this.Minutes = minutes;
             this.Seconds = seconds;
 
-            TimeValidator.validateHour(this.Hours);
-            TimeValidator.validateMinute(this.Minutes);
-            TimeValidator.validateSecond(this.Seconds);
+            TimeValidator.ValidateHour(this.Hours);
+            TimeValidator.ValidateMinute(this.Minutes);
+            TimeValidator.ValidateSecond(this.Seconds);
 
-            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
+            this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(byte hours, byte minutes)
@@ -30,32 +33,32 @@ namespace TimeLibrary
             this.Hours = hours;
             this.Minutes = minutes;
 
-            TimeValidator.validateHour(this.Hours);
-            TimeValidator.validateMinute(this.Minutes);
+            TimeValidator.ValidateHour(this.Hours);
+            TimeValidator.ValidateMinute(this.Minutes);
 
-            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
+            this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(byte hours)
         {
             this.Hours = hours;
 
-            TimeValidator.validateHour(this.Hours);
+            TimeValidator.ValidateHour(this.Hours);
 
-            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
+            this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(string timeString)
         {
-            this.Hours = TimeStringParser.GetHours(timeString);
-            this.Minutes = TimeStringParser.GetMinutes(timeString);
-            this.Seconds = TimeStringParser.GetSeconds(timeString);
+            this.Hours = (byte)(StringToTimeParser.GetHours(timeString));
+            this.Minutes = StringToTimeParser.GetMinutes(timeString);
+            this.Seconds = StringToTimeParser.GetSeconds(timeString);
 
-            TimeValidator.validateHour(this.Hours);
-            TimeValidator.validateMinute(this.Minutes);
-            TimeValidator.validateSecond(this.Seconds);
+            TimeValidator.ValidateHour(this.Hours);
+            TimeValidator.ValidateMinute(this.Minutes);
+            TimeValidator.ValidateSecond(this.Seconds);
 
-            this.timestamp = TimestampGenerator.GetTimestamp(this.Hours, this.Minutes, this.Seconds);
+            this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
 
         public static bool operator ==(Time time1, Time time2) => time1.Equals(time2);
@@ -63,34 +66,34 @@ namespace TimeLibrary
 
         public static bool operator >(Time time1, Time time2)
         {
-            return time1.timestamp > time2.timestamp;
+            return time1.TimeInSeconds > time2.TimeInSeconds;
         }
 
         public static bool operator <(Time time1, Time time2)
         {
-            return time1.timestamp < time2.timestamp;
+            return time1.TimeInSeconds < time2.TimeInSeconds;
         }
 
         public static bool operator >=(Time time1, Time time2)
         {
-            return time1.timestamp >= time2.timestamp;
+            return time1.TimeInSeconds >= time2.TimeInSeconds;
         }
 
         public static bool operator <=(Time time1, Time time2)
         {
-            return time1.timestamp <= time2.timestamp;
+            return time1.TimeInSeconds <= time2.TimeInSeconds;
         }
 
         public bool Equals(Time time)
         {
-            return this.timestamp == time.timestamp;
+            return this.TimeInSeconds == time.TimeInSeconds;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is Time)
+            if (obj is Time time)
             {
-                return Equals((Time)obj);
+                return Equals(time);
             }
 
             return base.Equals(obj);
@@ -98,7 +101,7 @@ namespace TimeLibrary
 
         public override int GetHashCode()
         {
-            return (int) (this.Hours + this.Minutes + this.Seconds + this.timestamp);
+            return (int) (this.Hours + this.Minutes + this.Seconds + this.TimeInSeconds);
         }
 
         public int CompareTo(Time time)
@@ -108,7 +111,7 @@ namespace TimeLibrary
                 return 0;
             }
 
-            if (this.timestamp < time.timestamp)
+            if (this.TimeInSeconds < time.TimeInSeconds)
             {
                 return 1;
             }
@@ -118,7 +121,7 @@ namespace TimeLibrary
 
         public override string ToString()
         {
-            return Hours.ToString("D2") + ":" + Minutes.ToString("D2") + ":" + Seconds.ToString("D2");
+            return TimeToStringParser.FromTime(Hours, Minutes, Seconds);
         }
     }
 }
