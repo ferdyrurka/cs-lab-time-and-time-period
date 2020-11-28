@@ -1,16 +1,16 @@
-﻿namespace TimeLibrary
+﻿using TimeLibrary.Factory;
+
+namespace TimeLibrary
 {
-    class TimeToStringParser
+    class ToStringParser
     {
         public static string FromTimeInSeconds(long timeInSeconds)
         {
             int hours = (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS);
-            int minutesInSeconds = (int)(timeInSeconds % (int)TimeEnum.ONE_HOUR_IN_SECONDS);
-            byte seconds = (byte)(minutesInSeconds % (byte)TimeEnum.ONE_MINUTE_IN_SECONDS);
 
             return hours.ToString("D2") + ":"
-                + (minutesInSeconds / (byte)TimeEnum.ONE_MINUTE_IN_SECONDS).ToString("D2") + ":"
-                + seconds.ToString("D2")
+                + TimeFactory.GetMinutes(timeInSeconds).ToString("D2") + ":"
+                + TimeFactory.GetSeconds(timeInSeconds).ToString("D2")
             ;
         }
 

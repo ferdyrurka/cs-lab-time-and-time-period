@@ -2,7 +2,7 @@
 
 namespace TimeLibrary.Parser
 {
-    class StringToTimeParser
+    class ToTimeParser
     {
         public static int GetHours(string timeString)
         {

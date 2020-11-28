@@ -8,7 +8,7 @@ namespace TimeLibrary.Validator
         {
             if (value < (byte)TimeEnum.MIN_HOUR || value > (byte)TimeEnum.MAX_HOUR)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("hour" + value.ToString());
             }
         }
 
@@ -16,7 +16,7 @@ namespace TimeLibrary.Validator
         {
             if (value < (byte)TimeEnum.MIN_MINUTE || value > (byte)TimeEnum.MAX_MINUTE)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("minute" + value.ToString());
             }
         }
 
@@ -24,7 +24,7 @@ namespace TimeLibrary.Validator
         {
             if (value < (byte)TimeEnum.MIN_SECOND || value > (byte)TimeEnum.MAX_SECOND)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(value.ToString());
             }
         }
     }

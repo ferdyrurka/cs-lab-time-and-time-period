@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using TimeLibrary.Factory;
 using TimeLibrary.Helper;
 using TimeLibrary.Parser;
 using TimeLibrary.Validator;
@@ -9,7 +8,7 @@ namespace TimeLibrary
 {
     public class TimePeriod : IEquatable<TimePeriod>, IComparable<TimePeriod>
     {
-        private readonly long TimeInSeconds;
+        public readonly long TimeInSeconds;
 
         public TimePeriod(int hours, byte minutes, byte seconds)
         {
@@ -37,9 +36,9 @@ namespace TimeLibrary
 
         public TimePeriod(string timeString)
         {
-            int hours = StringToTimeParser.GetHours(timeString);
-            byte minutes = StringToTimeParser.GetMinutes(timeString);
-            byte seconds = StringToTimeParser.GetSeconds(timeString);
+            int hours = ToTimeParser.GetHours(timeString);
+            byte minutes = ToTimeParser.GetMinutes(timeString);
+            byte seconds = ToTimeParser.GetSeconds(timeString);
 
             TimePeriodValidator.ValidateHour(hours);
             TimePeriodValidator.ValidateMinute(minutes);
@@ -69,6 +68,33 @@ namespace TimeLibrary
         public static bool operator <=(TimePeriod timePeriod1, TimePeriod timePeriod2)
         {
             return timePeriod1.TimeInSeconds <= timePeriod2.TimeInSeconds;
+        }
+
+        public static TimePeriod operator +(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            long timeInSeconds = timePeriod1.TimeInSeconds + timePeriod2.TimeInSeconds;
+
+            return new TimePeriod(
+                (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS),
+                TimeFactory.GetMinutes(timeInSeconds),
+                TimeFactory.GetSeconds(timeInSeconds)
+            );
+        }
+
+        public static TimePeriod operator -(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            long timeInSeconds = timePeriod1.TimeInSeconds - timePeriod2.TimeInSeconds;
+
+            if (timeInSeconds < 0)
+            {
+                throw new ArgumentException("It cannot be less than zero");
+            }
+
+            return new TimePeriod(
+                (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS),
+                TimeFactory.GetMinutes(timeInSeconds),
+                TimeFactory.GetSeconds(timeInSeconds)
+            );
         }
 
         public bool Equals(TimePeriod timePeriod)
@@ -108,7 +134,27 @@ namespace TimeLibrary
 
         public override string ToString()
         {
-            return TimeToStringParser.FromTimeInSeconds(TimeInSeconds);
+            return ToStringParser.FromTimeInSeconds(TimeInSeconds);
+        }
+
+        public TimePeriod Plus(TimePeriod timePeriod)
+        {
+            return this + timePeriod;
+        }
+
+        public static TimePeriod Plus(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1 + timePeriod2;
+        }
+
+        public TimePeriod Minus(TimePeriod timePeriod)
+        {
+            return this - timePeriod;
+        }
+
+        public static TimePeriod Minus(TimePeriod timePeriod1, TimePeriod timePeriod2)
+        {
+            return timePeriod1 - timePeriod2;
         }
     }
 }

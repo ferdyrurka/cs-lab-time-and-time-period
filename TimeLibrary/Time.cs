@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeLibrary.Factory;
 using TimeLibrary.Helper;
 using TimeLibrary.Parser;
 using TimeLibrary.Validator;
@@ -50,9 +51,9 @@ namespace TimeLibrary
 
         public Time(string timeString)
         {
-            this.Hours = (byte)(StringToTimeParser.GetHours(timeString));
-            this.Minutes = StringToTimeParser.GetMinutes(timeString);
-            this.Seconds = StringToTimeParser.GetSeconds(timeString);
+            this.Hours = (byte)(ToTimeParser.GetHours(timeString));
+            this.Minutes = ToTimeParser.GetMinutes(timeString);
+            this.Seconds = ToTimeParser.GetSeconds(timeString);
 
             TimeValidator.ValidateHour(this.Hours);
             TimeValidator.ValidateMinute(this.Minutes);
@@ -82,6 +83,60 @@ namespace TimeLibrary
         public static bool operator <=(Time time1, Time time2)
         {
             return time1.TimeInSeconds <= time2.TimeInSeconds;
+        }
+
+        public static Time operator +(Time time, TimePeriod timePeriod)
+        {
+            long timeInSeconds = timePeriod.TimeInSeconds + time.TimeInSeconds;
+
+            return new Time(
+                TimeFactory.GetHours(timeInSeconds),
+                TimeFactory.GetMinutes(timeInSeconds),
+                TimeFactory.GetSeconds(timeInSeconds)
+            );
+        }
+
+        public static Time operator -(Time time, TimePeriod timePeriod)
+        {
+            long timeInSeconds = time.TimeInSeconds - timePeriod.TimeInSeconds;
+
+            if (timeInSeconds < 0)
+            {
+                byte periodHours = TimeFactory.GetHours(timePeriod.TimeInSeconds);
+                byte periodMinutes = TimeFactory.GetMinutes(timePeriod.TimeInSeconds);
+                byte periodSeconds = TimeFactory.GetSeconds(timePeriod.TimeInSeconds);
+                
+                int hours = time.Hours - periodHours;
+                int minutes = time.Minutes - periodMinutes;
+                int seconds = time.Seconds - periodSeconds;
+
+                if (hours < (byte)TimeEnum.MIN_HOUR)
+                {
+                    hours = periodHours - time.Hours;
+                }
+
+                if (minutes < (byte)TimeEnum.MIN_MINUTE)
+                {
+                    minutes = periodMinutes - time.Minutes;
+                }
+
+                if (seconds < (byte)TimeEnum.MIN_SECOND)
+                {
+                    seconds = periodSeconds - time.Seconds;
+                }
+
+                return new Time(
+                    (byte)hours,
+                    (byte)minutes,
+                    (byte)seconds
+                );
+            }
+
+            return new Time(
+                TimeFactory.GetHours(timeInSeconds),
+                TimeFactory.GetMinutes(timeInSeconds),
+                TimeFactory.GetSeconds(timeInSeconds)
+            );
         }
 
         public bool Equals(Time time)
@@ -121,7 +176,27 @@ namespace TimeLibrary
 
         public override string ToString()
         {
-            return TimeToStringParser.FromTime(Hours, Minutes, Seconds);
+            return ToStringParser.FromTime(Hours, Minutes, Seconds);
+        }
+
+        public Time Plus(TimePeriod timePeriod)
+        {
+            return this + timePeriod;
+        }
+
+        public static Time Plus(Time time, TimePeriod timePeriod)
+        {
+            return time + timePeriod;
+        }
+
+        public Time Minus(TimePeriod timePeriod)
+        {
+            return this - timePeriod;
+        }
+
+        public static Time Minus(Time time, TimePeriod timePeriod)
+        {
+            return time - timePeriod;
         }
     }
 }

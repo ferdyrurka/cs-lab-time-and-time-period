@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using TimeLibrary;
 
 namespace TimeLibraryUnitTests
@@ -243,6 +242,78 @@ namespace TimeLibraryUnitTests
                     new List<TimePeriod> { new TimePeriod(10, 32, 12), new TimePeriod(312, 25, 9), new TimePeriod(0, 0, 0), new TimePeriod(23, 59, 58), new TimePeriod(0, 0, 0), new TimePeriod(23, 59, 59) },
                     new string[] { "312:25:09", "23:59:59", "23:59:58", "10:32:12", "00:00:00", "00:00:00" }
             },
+        };
+
+        [TestMethod]
+        [DynamicData(nameof(PlusDataSet))]
+        public void PlusOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual((timePeriod1 + timePeriod2).ToString(), expected);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(PlusDataSet))]
+        public void PlusStaticMethodOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual(TimePeriod.Plus(timePeriod1, timePeriod2).ToString(), expected);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(PlusDataSet))]
+        public void PlusTimeObjectOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual(timePeriod1.Plus(timePeriod2).ToString(), expected);
+        }
+
+        public static IEnumerable<object[]> PlusDataSet => new List<object[]>
+        {
+            new object[] {new TimePeriod(9), new TimePeriod(8), "17:00:00"},
+            new object[] {new TimePeriod(23), new TimePeriod(23), "46:00:00"},
+            new object[] {new TimePeriod(23), new TimePeriod(24), "47:00:00"},
+            new object[] {new TimePeriod(21, 10), new TimePeriod(21, 9), "42:19:00"},
+            new object[] {new TimePeriod(13, 50), new TimePeriod(0, 51), "14:41:00"},
+            new object[] {new TimePeriod(15, 25, 25), new TimePeriod(1, 25, 24), "16:50:49"},
+            new object[] {new TimePeriod(1, 17, 59), new TimePeriod(22, 42, 59), "24:00:58"},
+            new object[] {new TimePeriod(20, 59, 59), new TimePeriod(49, 59, 1), "70:59:00"},
+            new object[] {new TimePeriod(20, 59, 59), new TimePeriod(48, 0, 59), "69:00:58"},
+            new object[] {new TimePeriod(23, 59, 00), new TimePeriod(0, 0, 59), "23:59:59"},
+            new object[] {new TimePeriod(23, 59, 59), new TimePeriod(0, 2, 0), "24:01:59"},
+        };
+
+        [TestMethod]
+        [DynamicData(nameof(MinusDataSet))]
+        public void MinusOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual((timePeriod1 - timePeriod2).ToString(), expected);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(MinusDataSet))]
+        public void MinusStaticMethodOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual(TimePeriod.Minus(timePeriod1, timePeriod2).ToString(), expected);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(MinusDataSet))]
+        public void MinusTimeObjectOperator(TimePeriod timePeriod1, TimePeriod timePeriod2, string expected)
+        {
+            Assert.AreEqual(timePeriod1.Minus(timePeriod2).ToString(), expected);
+        }
+
+        public static IEnumerable<object[]> MinusDataSet => new List<object[]>
+        {
+            new object[] {new TimePeriod(9), new TimePeriod(8), "01:00:00"},
+            new object[] {new TimePeriod(23), new TimePeriod(23), "00:00:00"},
+            new object[] {new TimePeriod(25), new TimePeriod(24), "01:00:00"},
+            new object[] {new TimePeriod(21, 10), new TimePeriod(21, 9), "00:01:00"},
+            new object[] {new TimePeriod(13, 50), new TimePeriod(0, 51), "12:59:00"},
+            new object[] {new TimePeriod(15, 25, 25), new TimePeriod(1, 25, 24), "14:00:01"},
+            new object[] {new TimePeriod(100, 17, 59), new TimePeriod(22, 42, 59), "77:35:00"},
+            new object[] {new TimePeriod(200, 59, 59), new TimePeriod(49, 59, 1), "151:00:58"},
+            new object[] {new TimePeriod(200, 59, 59), new TimePeriod(48, 0, 59), "152:59:00"},
+            new object[] {new TimePeriod(23, 59, 00), new TimePeriod(0, 0, 59), "23:58:00"},
+            new object[] {new TimePeriod(23, 59, 59), new TimePeriod(0, 2, 0), "23:57:59"},
         };
     }
 }
