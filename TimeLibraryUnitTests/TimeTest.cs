@@ -315,7 +315,9 @@ namespace TimeLibraryUnitTests
             new object[] {new Time(20, 59, 59), new TimePeriod(49, 59, 1), "19:00:58"},
             new object[] {new Time(20, 59, 59), new TimePeriod(48, 0, 59), "20:59:00"},
             new object[] {new Time(23, 59, 00), new TimePeriod(0, 0, 59), "23:58:01"},
-            new object[] {new Time(23, 59, 59), new TimePeriod(0, 2, 0), "23:57:59"},
+            new object[] {new Time(23, 59, 59), new TimePeriod(0, 0, 59), "23:59:00"},
+            new object[] {new Time(23, 59, 59), new TimePeriod(0, 59, 0), "23:00:59"},
+            new object[] {new Time(23, 00, 59), new TimePeriod(0, 59, 0), "22:01:59"},
         };
     }
 }

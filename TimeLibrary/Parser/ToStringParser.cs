@@ -6,9 +6,7 @@ namespace TimeLibrary
     {
         public static string FromTimeInSeconds(long timeInSeconds)
         {
-            int hours = (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS);
-
-            return hours.ToString("D2") + ":"
+            return TimeFactory.GetSumHours(timeInSeconds).ToString("D2") + ":"
                 + TimeFactory.GetMinutes(timeInSeconds).ToString("D2") + ":"
                 + TimeFactory.GetSeconds(timeInSeconds).ToString("D2")
             ;

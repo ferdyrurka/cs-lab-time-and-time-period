@@ -1,7 +1,6 @@
 ﻿using System;
 using TimeLibrary.Factory;
 using TimeLibrary.Helper;
-using TimeLibrary.Parser;
 using TimeLibrary.Validator;
 
 namespace TimeLibrary
@@ -22,9 +21,9 @@ namespace TimeLibrary
             this.Minutes = minutes;
             this.Seconds = seconds;
 
-            TimeValidator.ValidateHour(this.Hours);
-            TimeValidator.ValidateMinute(this.Minutes);
-            TimeValidator.ValidateSecond(this.Seconds);
+            TimeValidator.ValidateHours(this.Hours);
+            TimeValidator.ValidateMinutes(this.Minutes);
+            TimeValidator.ValidateSeconds(this.Seconds);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
@@ -34,8 +33,8 @@ namespace TimeLibrary
             this.Hours = hours;
             this.Minutes = minutes;
 
-            TimeValidator.ValidateHour(this.Hours);
-            TimeValidator.ValidateMinute(this.Minutes);
+            TimeValidator.ValidateHours(this.Hours);
+            TimeValidator.ValidateMinutes(this.Minutes);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
@@ -44,20 +43,20 @@ namespace TimeLibrary
         {
             this.Hours = hours;
 
-            TimeValidator.ValidateHour(this.Hours);
+            TimeValidator.ValidateHours(this.Hours);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }
 
         public Time(string timeString)
         {
-            this.Hours = (byte)(ToTimeParser.GetHours(timeString));
-            this.Minutes = ToTimeParser.GetMinutes(timeString);
-            this.Seconds = ToTimeParser.GetSeconds(timeString);
+            this.Hours = (byte)TimeFactory.GetHours(timeString));
+            this.Minutes = TimeFactory.GetMinutes(timeString);
+            this.Seconds = TimeFactory.GetSeconds(timeString);
 
-            TimeValidator.ValidateHour(this.Hours);
-            TimeValidator.ValidateMinute(this.Minutes);
-            TimeValidator.ValidateSecond(this.Seconds);
+            TimeValidator.ValidateHours(this.Hours);
+            TimeValidator.ValidateMinutes(this.Minutes);
+            TimeValidator.ValidateSeconds(this.Seconds);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(this.Hours, this.Minutes, this.Seconds);
         }

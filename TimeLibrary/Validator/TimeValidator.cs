@@ -4,27 +4,35 @@ namespace TimeLibrary.Validator
 {
     class TimeValidator
     {
-        public static void ValidateHour(byte value)
+        public static void ValidateHours(byte value)
         {
             if (value < (byte)TimeEnum.MIN_HOUR || value > (byte)TimeEnum.MAX_HOUR)
             {
-                throw new ArgumentException("hour" + value.ToString());
+                throw new ArgumentException();
             }
         }
 
-        public static void ValidateMinute(byte value)
+        public static void ValidateHours(int value)
+        {
+            if (value < (byte)TimeEnum.MIN_HOUR)
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public static void ValidateMinutes(byte value)
         {
             if (value < (byte)TimeEnum.MIN_MINUTE || value > (byte)TimeEnum.MAX_MINUTE)
             {
-                throw new ArgumentException("minute" + value.ToString());
+                throw new ArgumentException();
             }
         }
 
-        public static void ValidateSecond(byte value)
+        public static void ValidateSeconds(byte value)
         {
             if (value < (byte)TimeEnum.MIN_SECOND || value > (byte)TimeEnum.MAX_SECOND)
             {
-                throw new ArgumentException(value.ToString());
+                throw new ArgumentException();
             }
         }
     }

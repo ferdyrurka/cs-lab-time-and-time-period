@@ -1,7 +1,6 @@
 ﻿using System;
 using TimeLibrary.Factory;
 using TimeLibrary.Helper;
-using TimeLibrary.Parser;
 using TimeLibrary.Validator;
 
 namespace TimeLibrary
@@ -12,37 +11,37 @@ namespace TimeLibrary
 
         public TimePeriod(int hours, byte minutes, byte seconds)
         {
-            TimePeriodValidator.ValidateHour(hours);
-            TimePeriodValidator.ValidateMinute(minutes);
-            TimePeriodValidator.ValidateSecond(seconds);
+            TimeValidator.ValidateHours(hours);
+            TimeValidator.ValidateMinutes(minutes);
+            TimeValidator.ValidateSeconds(seconds);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes, seconds);
         }
 
         public TimePeriod(int hours, byte minutes)
         {
-            TimePeriodValidator.ValidateHour(hours);
-            TimePeriodValidator.ValidateMinute(minutes);
+            TimeValidator.ValidateHours(hours);
+            TimeValidator.ValidateMinutes(minutes);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes);
         }
 
         public TimePeriod(int hours)
         {
-            TimePeriodValidator.ValidateHour(hours);
+            TimeValidator.ValidateHours(hours);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(hours);
         }
 
         public TimePeriod(string timeString)
         {
-            int hours = ToTimeParser.GetHours(timeString);
-            byte minutes = ToTimeParser.GetMinutes(timeString);
-            byte seconds = ToTimeParser.GetSeconds(timeString);
+            int hours = TimeFactory.GetHours(timeString);
+            byte minutes = TimeFactory.GetMinutes(timeString);
+            byte seconds = TimeFactory.GetSeconds(timeString);
 
-            TimePeriodValidator.ValidateHour(hours);
-            TimePeriodValidator.ValidateMinute(minutes);
-            TimePeriodValidator.ValidateSecond(seconds);
+            TimeValidator.ValidateHours(hours);
+            TimeValidator.ValidateMinutes(minutes);
+            TimeValidator.ValidateSeconds(seconds);
 
             this.TimeInSeconds = TimeToSecondHelper.Get(hours, minutes, seconds);
         }
@@ -75,7 +74,7 @@ namespace TimeLibrary
             long timeInSeconds = timePeriod1.TimeInSeconds + timePeriod2.TimeInSeconds;
 
             return new TimePeriod(
-                (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS),
+                TimeFactory.GetSumHours(timeInSeconds),
                 TimeFactory.GetMinutes(timeInSeconds),
                 TimeFactory.GetSeconds(timeInSeconds)
             );
@@ -91,7 +90,7 @@ namespace TimeLibrary
             }
 
             return new TimePeriod(
-                (int)(timeInSeconds / (int)TimeEnum.ONE_HOUR_IN_SECONDS),
+                TimeFactory.GetSumHours(timeInSeconds),
                 TimeFactory.GetMinutes(timeInSeconds),
                 TimeFactory.GetSeconds(timeInSeconds)
             );
