@@ -50,7 +50,7 @@ namespace TimeLibrary
 
         public Time(string timeString)
         {
-            this.Hours = (byte)TimeFactory.GetHours(timeString));
+            this.Hours = (byte)TimeFactory.GetHours(timeString);
             this.Minutes = TimeFactory.GetMinutes(timeString);
             this.Seconds = TimeFactory.GetSeconds(timeString);
 
