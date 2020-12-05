@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLibrary", "cs-lab-Time-and-TimePeriod\TimeLibrary\TimeLibrary.csproj", "{257E4DDD-90D7-4303-A615-4996D64B8FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLibraryUnitTests", "cs-lab-Time-and-TimePeriod\TimeLibraryUnitTests\TimeLibraryUnitTests.csproj", "{3E915E9A-E0B3-4A68-B4BE-353B896B271D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{257E4DDD-90D7-4303-A615-4996D64B8FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257E4DDD-90D7-4303-A615-4996D64B8FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257E4DDD-90D7-4303-A615-4996D64B8FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257E4DDD-90D7-4303-A615-4996D64B8FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E915E9A-E0B3-4A68-B4BE-353B896B271D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E915E9A-E0B3-4A68-B4BE-353B896B271D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E915E9A-E0B3-4A68-B4BE-353B896B271D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E915E9A-E0B3-4A68-B4BE-353B896B271D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BFB2E83-7C81-4806-9BE5-9EAA6E8C985B}
+	EndGlobalSection
+EndGlobal
